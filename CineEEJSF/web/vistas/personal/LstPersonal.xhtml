@@ -1,0 +1,102 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:p="http://primefaces.org/ui">
+    <h:head>
+        <title>Lista Personal</title>
+        <f:event type="preRenderView" listener="#{personalC.listar()}" />
+    </h:head>
+    <h:body>  
+        <p:growl autoUpdate="true" showDetail="true" id="message" />
+        <h:form id="form">
+            <p:dataTable value="#{personalC.listadoPer}" var="lista" id="dtTable" 
+                         paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink}"
+                         paginator="true" rows="10" style="margin-bottom:20px">
+                <p:column headerText="Id" >
+                    <h:outputText value="#{lista.idPer}" />
+                </p:column>
+                <p:column headerText="Nombre"  filterBy="#{lista.nomPer}" filterMatchMode="contains">
+                    <h:outputText value="#{lista.nomPer}" />
+                </p:column>
+                <p:column headerText="Apellido" >
+                    <h:outputText value="#{lista.apePer}" />
+                </p:column>
+                <p:column headerText="DNI" >
+                    <h:outputText value="#{lista.dniPer}" />
+                </p:column>
+                <p:column headerText="Dirección" >
+                    <h:outputText value="#{lista.dirPer}" />
+                </p:column>
+                <p:column headerText="Tipo" >
+                    <h:outputText value="#{lista.tipPer}" />
+                </p:column>
+                <p:column headerText="Sexo" >
+                    <h:outputText value="#{lista.sexPer}" />
+                </p:column>
+                <p:column headerText="Usuario" >
+                    <h:outputText value="#{lista.usuPer}" />
+                </p:column>
+                <p:column headerText="Password" >
+                    <h:outputText value="#{lista.pwdPer}" />
+                </p:column>
+                <p:column headerText="Ubigeo" >
+                    <h:outputText value="#{lista.codUbi}" />
+                </p:column>
+
+                <p:column style="width:50px"  exportable="false">
+                    <p:commandButton update=":dlgDatos" icon="fa-edit" oncomplete="PF('wdlgDatos').show();">
+
+                    </p:commandButton>
+                </p:column>
+
+                <p:column style="width:50px"  exportable="false">
+                    <p:commandButton update=":dlgDatos" icon="ui-icon-pencil" oncomplete="PF('wdlgDatos').show();">
+                        <f:setPropertyActionListener value="#{lista}" target="#{personalC.personal}"/>
+                    </p:commandButton>
+                </p:column>
+
+                <p:column style="width:54px">
+                    <p:commandButton title="ELIMINAR" icon="ui-icon-circle-close" actionListener="#{personalC.eliminar(lista)}" update=":message" >
+                        <p:confirm header="Confirmación" message="¿Deseas Eliminar? " icon="ui-icon-alert" />
+                        <p:tooltip trackMouse="true"/>
+                    </p:commandButton>
+                    <p:confirmDialog global="true" showEffect="fade" hideEffect="fade">
+                        <p:commandButton value="Si" type="button" styleClass="ui-confirmdialog-yes" icon="ui-icon-check" />
+                        <p:commandButton value="No" type="button" styleClass="ui-confirmdialog-no" icon="ui-icon-close" />
+                    </p:confirmDialog>
+                </p:column>
+            </p:dataTable>
+        </h:form>
+        <p:dialog id="dlgDatos" widgetVar="wdlgDatos" header="Datos del Personal">
+            <h:form>
+                <p:panelGrid columns="4">
+                    <p:outputLabel value="Nombre"/><p:inputText value="#{personalC.personal.nomPer}" maxlength="50"/>
+                    <p:outputLabel value="Apellido"/><p:inputText value="#{personalC.personal.apePer}" maxlength="80"/>
+                    <p:outputLabel value="Dirección"/><p:inputText value="#{personalC.personal.dirPer}" maxlength="80"/>
+                    <p:outputLabel value="DNI"/><p:inputText value="#{personalC.personal.dniPer}" maxlength="8"/>
+                    <p:outputLabel value="Sexo"/><p:inputText value="#{personalC.personal.sexPer}"/>
+                    <p:outputLabel value="Tipo" for="idTipo"/>
+                    <p:inputText value="#{personalC.personal.tipPer}" id="idTipo" required="true" requiredMessage="Ingrese el tipo"/>
+                    <p:outputLabel value="Usuario"/><p:inputText value="#{personalC.personal.usuPer}" maxlength="4"/>
+                    <p:outputLabel value="Clave"/><p:password value="#{personalC.personal.pwdPer}" maxlength="6"/>
+                    <p:outputLabel value="Ubigeo"/>
+                    <p:autoComplete  value="#{personalC.personal.codUbi}" completeMethod="#{personalC.completeTextUbigeo}" />
+                </p:panelGrid>
+                <p:commandButton value="Modificar" actionListener="#{personalC.modificar()}" oncomplete="PF('wdlgDatos').hide();" update=":form :message">
+                    <p:confirm header="Confirmation" message="¿Quiere Modificar?" icon="ui-icon-alert" />
+                </p:commandButton>
+
+                <p:confirmDialog global="true" showEffect="fade" hideEffect="fade">
+                    <p:commandButton value="Si" type="button" styleClass="ui-confirmdialog-yes" icon="ui-icon-check" />
+                    <p:commandButton value="No" type="button" styleClass="ui-confirmdialog-no" icon="ui-icon-close" />
+                </p:confirmDialog>
+
+                <p:commandButton value="Cancelar" immediate="true" oncomplete="PF('wdlgDatos').hide();"/>
+            </h:form>
+        </p:dialog>
+        <ui:include src="UpdPersonal.xhtml"/>
+    </h:body>
+</html>
+

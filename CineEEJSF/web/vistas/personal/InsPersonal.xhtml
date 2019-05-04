@@ -1,0 +1,31 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:p="http://primefaces.org/ui">
+    <h:head>
+        <title>Registro de Personal</title>
+    </h:head>
+    <h:body>
+        <p:dialog id="insDial" widgetVar="winsDial" modal="true" showEffect="true">
+            <p:growl autoUpdate="true" showDetail="true" id="message"/>
+            <h:form id="formIns">
+                <p:panelGrid columns="4">
+                    <p:outputLabel value="Nombre"/><p:inputText value="#{personalC.personal.nomPer}" maxlength="50"/>
+                    <p:outputLabel value="Apellido"/><p:inputText value="#{personalC.personal.apePer}" maxlength="80"/>
+                    <p:outputLabel value="Dirección"/><p:inputText value="#{personalC.personal.dirPer}" maxlength="80"/>
+                    <p:outputLabel value="DNI"/><p:inputText value="#{personalC.personal.dniPer}" maxlength="8"/>
+                    <p:outputLabel value="Sexo"/><p:inputText value="#{personalC.personal.sexPer}"/>
+                    <p:outputLabel value="Tipo" for="idTipo"/>
+                    <p:inputText value="#{personalC.personal.tipPer}" id="idTipo" required="true" requiredMessage="Ingrese el tipo"/>
+                    <p:outputLabel value="Usuario"/><p:inputText value="#{personalC.personal.usuPer}" maxlength="4"/>
+                    <p:outputLabel value="Clave"/><p:password value="#{personalC.personal.pwdPer}" maxlength="6"/>
+                    <p:outputLabel value="Ubigeo"/><p:inputText value="#{personalC.personal.codUbi}"/>
+                </p:panelGrid>
+                <p:commandButton value="Registrar" actionListener="#{personalC.registrar()}"  update=":form"/> 
+            </h:form>
+        </p:dialog>
+    </h:body>
+</html>
+
